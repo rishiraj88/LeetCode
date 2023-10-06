@@ -1,7 +1,5 @@
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -48,11 +46,17 @@ public class LC01TwoSum {
 	//{ 2, 5, 5, 11 }, target = 10
 	//    ,3  ,2 
 
-	public int[] twoSumSlow(int[] nums, int target) {
+	public int[] twoSumFast(int[] nums, int target) {
 		Map<Integer,Integer> map = new HashMap<>();
 		for(int i= 0;i<nums.length;i++) {
-			if(nums[i]+)
+			Integer deficitIndex = map.get(nums[i]); // assuming nums[i] to be the deficit for another number in nums array
+			if(null != deficitIndex) {
+				return new int[]{i,deficitIndex};
+			} else {
+				map.put(target - nums[i],i);
+			}
 		}
+		return new int[]{-1,-1};
 	}
 
 	public int[] twoSumSlow(int[] nums, int target) {
@@ -68,15 +72,54 @@ public class LC01TwoSum {
 	}
 
 	public static void main(String[] args) {
+		Random random = new Random();
+		int[] a1 = new int[1000000];
+		for(int i=0;i<a1.length;i++){
+			a1[i]=random.nextInt(50000);
+		}
+
+		//slower algorithm
 		long start = System.currentTimeMillis();
 		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(new int[] { 2, 5, 5, 11 }, 10)));
-		long end = System.currentTimeMillis();
-		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(new int[] { 3, 2, 4, -2, 8 }, 6)));
-		end = System.currentTimeMillis();
+		long mid1 = System.currentTimeMillis();
+		System.out.println("Time to find a pair: " +(mid1-start));
 
-		System.out.println(Arrays.toString(new LC01TwoSum().twoSumFast(new int[] { 2, 5, 5, 11 }, 10)));
+		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(new int[] { 3, 2, 4, -2, 8 }, 6)));
+		long mid2 = System.currentTimeMillis();
+		System.out.println("Time to find a pair: " +(mid2-mid1));
+
+		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(a1, 6)));
+		long end = System.currentTimeMillis();
+		System.out.println("Time to find a pair: " +(end-mid2));
+
+		//faster algorithm
+		start = System.currentTimeMillis();
+		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(new int[] { 2, 5, 5, 11 }, 10)));
+		mid1 = System.currentTimeMillis();
+		System.out.println("Time to find a pair: " +(mid1-start));
+
+		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(new int[] { 3, 2, 4, -2, 8 }, 6)));
+		mid2 = System.currentTimeMillis();
+		System.out.println("Time to find a pair: " +(mid2-mid1));
+
+		System.out.println(Arrays.toString(new LC01TwoSum().twoSumSlow(a1, 6)));
 		end = System.currentTimeMillis();
-		System.out.println(Arrays.toString(new LC01TwoSum().twoSumFast(new int[] { 3, 2, 4, -2, 8 }, 6)));
-		end = System.currentTimeMillis();
+		System.out.println("Time to find a pair: " +(end-mid2));
+
 	}
 }
+
+/* One output listing
+		[1, 2]
+		Time to find a pair: 1
+		[1, 2]
+		Time to find a pair: 4
+		[888, 6192]
+		Time to find a pair: 619
+		[1, 2]
+		Time to find a pair: 0
+		[1, 2]
+		Time to find a pair: 1
+		[888, 6192]
+		Time to find a pair: 241
+*/
